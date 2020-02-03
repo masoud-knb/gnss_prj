@@ -20,7 +20,7 @@
 % eph.w_dot(1)  =-0.856928551657e-08; 
 % time = 86400;
 
-function [sat_pv]=sat_pv_cal(eph)
+function [sat_pv,satclkcorr]=sat_pv_cal(eph)
     % Constant Values
     meu    =3.986005e14;  %m^3/s^2 - WGS 84 value of the earth's gravitational constant for GPS user
     omega_e=7.29211551467e-5;      %rad/s
@@ -28,17 +28,16 @@ function [sat_pv]=sat_pv_cal(eph)
     F      =-4.442807633e-10;      %sec/sqrt(m)
     
     count     =eph.count(1);
-    dt        =zeros(1,count); 
+    dt_sat        =zeros(1,count); 
     satclkcorr=zeros(1,count);
-    time      =zeros(1,count);
-    satpos_val=zeros(7,count);
+    satpos_val=zeros(8,count);
     
     
     
     for i=1:count
         transmitTime = eph.TOW(i);
-        dt(i)        = time_check(transmitTime - eph.t_oc(i));
-        satclkcorr(i)=((eph.a_f2(i))*dt(i)+eph.a_f1(i))*dt(i) ...
+        dt_sat(i)        = time_check(transmitTime - eph.t_oc(i));
+        satclkcorr(i)=((eph.a_f2(i))*dt_sat(i)+eph.a_f1(i))*dt_sat(i) ...
                        +eph.a_f0(i)-eph.TGD(i);
         time      =transmitTime - satclkcorr(i);
         A            =(eph.A_sqrt(i))^2;
@@ -89,13 +88,7 @@ function [sat_pv]=sat_pv_cal(eph)
                       *cos(w_k);
         zk_dot       =ypk_dot*sin(i_k)+yp_k*cos(i_k)*ik_dot;
         
-        satpos_val(:,i) =[time;x_k;y_k;z_k;xk_dot;yk_dot;zk_dot];
-        
-        
-      
-        
-        
-                   
+        satpos_val(:,i) =[eph.prn(i);time;x_k;y_k;z_k;xk_dot;yk_dot;zk_dot];          
     end
     
     sat_pv=satpos_val;
