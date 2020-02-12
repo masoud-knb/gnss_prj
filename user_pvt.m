@@ -30,5 +30,11 @@ function PVT=user_pvt()
     PVT.usr_vel(2,:)  = vel_y;
     PVT.usr_vel(3,:)  = vel_z;
     
+    PVT.rms_pos(1)  =rms(pos_x);
+    PVT.rms_pos(2)  =rms(pos_y);
+    PVT.rms_pos(3)  =rms(pos_z);
+    
+    
+    
     
 end

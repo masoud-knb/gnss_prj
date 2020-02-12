@@ -24,20 +24,20 @@ else
     end
     t = fread (f, [2, count], 'short');
     fclose (f);
-   % Normaization
-    t_r_max = max(t(1,:));
-    t_r_min = min(t(1,:));
-    t_i_max = max(t(2,:));
-    t_i_min = min(t(2,:));
+%    % Normaization
+%     t_r_max = max(t(1,:));
+%     t_r_min = min(t(1,:));
+%     t_i_max = max(t(2,:));
+%     t_i_min = min(t(2,:));
+%     
+%     a = -1; %Lower bound
+%     b =  1; %Upper bound 
+%     
+%     t_r_n = a+(t(1,:)-t_r_min)*(b-a)/(t_r_max-t_r_min);
+%     t_i_n = a+(t(2,:)-t_i_min)*(b-a)/(t_i_max-t_r_min);
     
-    a = -1; %Lower bound
-    b =  1; %Upper bound 
-    
-    t_r_n = a+(t(1,:)-t_r_min)*(b-a)/(t_r_max-t_r_min);
-    t_i_n = a+(t(2,:)-t_i_min)*(b-a)/(t_i_max-t_r_min);
-    
-    
-    v = t_r_n + t_i_n*1i;
+    v = t(1,:) + t(2,:)*1i;
+%     v = t_r_n + t_i_n*1i;
     [r, c] = size (v);
     v = reshape (v, c, r);
     
